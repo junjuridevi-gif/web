@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Unique Login | BSc (AI) College Group</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://kit.fontawesome.com/23eed5067f.css" crossorigin="anonymous">
+    <style>
+        html,
+        body {
+            min-height: 100vh;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(120deg, #434ce8 0%, #7fa6ee 100%);
+        }
+
+        #login-section,
+        #career-section,
+        #dashboard-section {
+            width: 100vw;
+        }
+
+        #login-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-row {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 10px 32px rgba(49, 60, 120, .15);
+            overflow: hidden;
+            max-width: 98vw;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .login-image-col {
+            display: none;
+        }
+
+        .login-card-col {
+            padding: 28px 15px 20px 15px;
+        }
+
+        .login-title {
+            color: #3655b3;
+            font-weight: 700;
+            font-size: 2rem;
+        }
+
+        .btn-gradient {
+            background: linear-gradient(90deg, #4768ea 0%, #5ed7fa 100%);
+            color: #fff;
+            border: none;
+            font-weight: 600;
+        }
+
+        .btn-gradient:hover,
+        .btn-gradient:focus {
+            background: linear-gradient(90deg, #365be7 0%, #14bde6 100%);
+        }
+
+        #error-msg {
+            color: #c0392b;
+            margin-top: 12px;
+            font-size: 1.08em;
+            display: none;
+        }
+
+        #career-section {
+            display: none;
+            padding: 0;
+            min-height: 100vh;
+            background: #183570;
+        }
+
+        #career-section header {
+            background: #fff;
+            color: #183570;
+            text-align: center;
+            padding: 12px 4px 18px 4px;
+            font-size: 1.16rem;
+            font-weight: 700;
+        }
+
+        #career-section header img {
+            width: 56px;
+            height: 56px;
+            border-radius: 28px;
+            margin-bottom: 3px;
+        }
+
+        #career-section section {
+            padding: 12px 4vw;
+        }
+
+        .course-list {
+            display: flex;
+            flex-direction: column;
+            gap: 11px;
+            margin: 17px 0;
+        }
+
+        .course {
+            background: #fff;
+            padding: 15px 0;
+            border-radius: 9px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, .10);
+            text-align: center;
+            font-size: 1.05rem;
+            font-weight: bold;
+            color: #1E88E5;
+            border-left: 4px solid #183570;
+            cursor: pointer;
+            transition: transform .17s, background .18s;
+        }
+
+        .course:hover,
+        .course:focus {
+            transform: scale(1.03);
+            background: #e3f2fd;
+        }
+
+        #dashboard-section {
+            display: none;
+            background: #f6f8fc;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            /* full viewport height */
+            background: #004080;
+            color: #fff;
+            padding-top: 36px;
+            min-width: 240px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 1000;
+            overflow-y: auto;
+            /* enable vertical scrolling */
+            -webkit-overflow-scrolling: touch;
+            /* smooth scrolling on iOS */
+        }
+
+
+        .mobile-nav {
+            display: flex;
+            overflow-x: auto;
+            background: #004080;
+            width: 100vw;
+        }
+
+        .mobile-nav .nav-link {
+            flex: 1 1 auto;
+            text-align: center;
+            color: #fff;
+            padding: 13px 3px;
+            font-size: 1.02rem;
+            border: none;
+            margin: 0px 2px;
+            background: none;
+            transition: background .16s, color .17s;
+            white-space: nowrap;
+        }
+
+        .mobile-nav .nav-link.active,
+        .mobile-nav .nav-link:focus,
+        .mobile-nav .nav-link:hover {
+            background: #FFD700;
+            color: #004080 !important;
+            font-weight: 600;
+        }
+
+        .main-content {
+            margin-left: 0;
+            padding: 18px 4vw 0px 4vw;
+        }
+
+        .section-content {
+            display: none;
+        }
+
+        .section-content.active {
+            display: block !important;
+        }
+
+        .footer {
+            background: transparent;
+            text-align: center;
+            padding: 10px 0 18px;
+            color: #999;
+            font-size: 0.96em;
+        }
+
+        @media (min-width:768px) {
+            .login-row {
+                min-width: 440px;
+                width: 80%;
+                flex-direction: row;
+            }
+
+            .login-image-col {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: linear-gradient(135deg, #4776e6 0, #8e54e9 100%);
+                min-height: 250px;
+                padding: 44px 12px;
+            }
+
+            .login-image-col img {
+                max-width: 92px;
+                border-radius: 50%;
+                border: 4px solid #fff;
+            }
+
+            .login-card-col {
+                padding: 35px 32px 22px 32px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+
+            #career-section header img {
+                width: 65px;
+                height: 65px;
+                border-radius: 32.5px;
+            }
+        }
+
+        @media (min-width:992px) {
+            .mobile-nav {
+                display: none !important;
+            }
+
+            .sidebar {
+                display: flex;
+                flex-direction: column;
+                height: 100vh;
+                background: #004080;
+                color: #fff;
+                padding-top: 36px;
+                min-width: 240px;
+                position: fixed;
+                left: 0;
+                top: 0;
+                z-index: 1000;
+            }
+
+            .sidebar .nav-link {
+                color: #fff;
+                font-size: 1.16rem;
+                padding: 14px 28px;
+                border-left: 4px solid transparent;
+                transition: all 0.17s;
+            }
+
+            .sidebar .nav-link.active,
+            .sidebar .nav-link:hover {
+                background: #003060;
+                border-left: 4px solid #FFD700;
+                color: #FFD700;
+            }
+
+            .main-content {
+                margin-left: 240px;
+                padding: 40px 40px 0 40px;
+            }
+        }
+
+        @media(min-width:1200px) {
+            .main-content {
+                padding-left: 60px;
+                padding-right: 60px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="login-section">
+        <div class="container-fluid">
+            <div class="row no-gutters login-row mx-auto">
+                <div class="col-md-5 login-image-col d-none d-md-flex flex-column">
+                    <img src="https://res.cloudinary.com/dy2rrkzip/image/upload/v1757745975/ideal_college_image_tn475e.png" alt="College Logo" />
+                </div>
+                <div class="col-md-7 col-12 login-card-col">
+                    <h3 class="login-title mb-2">Sign In to Dashboard</h3>
+                    <p class="mb-4 text-muted">Ideal College Group Portal</p>
+                    <form id="login-form" autocomplete="off">
+                        <div class="form-group"><label for="username">Username</label>
+                            <input class="form-control" type="text" id="username" name="username" placeholder="Enter username" required>
+                        </div>
+                        <div class="form-group mb-2"><label for="password">Password</label>
+                            <input class="form-control" type="password" id="password" name="password" placeholder="Enter password" required>
+                        </div>
+                        <button type="submit" class="btn btn-gradient btn-block mt-3">Log In</button>
+                        <div id="error-msg">Invalid credentials. Please try again.</div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="career-section">
+        <header>
+            <img src="https://res.cloudinary.com/dy2rrkzip/image/upload/v1757745975/ideal_college_image_tn475e.png" />
+            <div>Ideal Career Path</div>
+        </header>
+        <section>
+            <div class="course-list">
+                <div class="course">BCA</div>
+                <div class="course" id="bsc-ai-course" tabindex="0">B.Sc AI (Honours)</div>
+                <div class="course">B.Sc Computer Science (Honours)</div>
+            </div>
+        </section>
+    </div>
+    <div id="dashboard-section">
+        <div class="sidebar d-none d-lg-flex flex-column">
+            <div class="text-center mb-4">
+                <img src="https://res.cloudinary.com/dy2rrkzip/image/upload/v1757745975/ideal_college_image_tn475e.png" style="width:80px;border-radius:40px;">
+                <div class="mt-2" style="font-size:1.2rem;font-weight:700;">BSc (AI) Portal</div>
+            </div>
+            <nav>
+                <a class="nav-link active" href="#" onclick="showSection('overview');">Overview</a>
+                <a class="nav-link" href="#" onclick="showSection('syllabus');">Syllabus</a>
+                <a class="nav-link" href="#" onclick="showSection('subjects');">Major Subjects</a>
+                <a class="nav-link" href="#" onclick="showSection('outcome');">Learning Outcome</a>
+                <a class="nav-link" href="#" onclick="showSection('jobs');">Job Opportunities</a>
+                <a class="nav-link" href="#" onclick="showSection('projects');">Projects</a>
+                <a class="nav-link" href="#" onclick="showSection('materials');">Material Books</a>
+                <a class="nav-link" href="#" onclick="showSection('quiz');">Quiz Links</a>
+                <a class="nav-link" href="#" onclick="showSection('placements');">Placements</a>
+                <a class="nav-link" href="#" onclick="showSection('classrooms');">Classrooms</a>
+                <a class="nav-link" href="#" onclick="showSection('labs');">Labs</a>
+                <a class="nav-link" href="#" onclick="showSection('faculty');">Faculty</a>
+            </nav>
+        </div>
+        <nav class="mobile-nav d-flex d-lg-none">
+            <a class="nav-link active" href="#" onclick="showSection('overview');">Overview</a>
+            <a class="nav-link" href="#" onclick="showSection('syllabus');">Syllabus</a>
+            <a class="nav-link" href="#" onclick="showSection('subjects');">Major Subjects</a>
+            <a class="nav-link" href="#" onclick="showSection('outcome');">Learning Outcome</a>
+            <a class="nav-link" href="#" onclick="showSection('jobs');">Job Opportunities</a>
+            <a class="nav-link" href="#" onclick="showSection('projects');">Projects</a>
+            <a class="nav-link" href="#" onclick="showSection('materials');">Material Books</a>
+            <a class="nav-link" href="#" onclick="showSection('quiz');">Quiz Links</a>
+            <a class="nav-link" href="#" onclick="showSection('placements');">Placements</a>
+            <a class="nav-link" href="#" onclick="showSection('classrooms');">Classrooms</a>
+            <a class="nav-link" href="#" onclick="showSection('labs');">Labs</a>
+            <a class="nav-link" href="#" onclick="showSection('faculty');">Faculty</a>
+        </nav>
+        <div class="main-content">
+            <div id="overview" class="section-content active">
+                <h2>Overview</h2>
+                <p>Welcome to BSc (AI)! This program delivers modern training in Artificial Intelligence and Data Science, readying students for high-impact tech careers.</p>
+            </div>
+            <div id="syllabus" class="section-content">
+                <h2>Syllabus</h2>
+                <p>Semester-wise detailed BSc (AI) syllabus will appear here.</p>
+            </div>
+            <div id="subjects" class="section-content">
+                <h2>Major Subjects</h2>
+                <p>Subjects including Python, Machine Learning, Data Structures, and more.</p>
+            </div>
+            <div id="outcome" class="section-content">
+                <h2>Learning Outcome</h2>
+                <p>Graduates will gain deep AI, coding, and real-world project skills.</p>
+            </div>
+            <div id="jobs" class="section-content">
+                <h2>Job Opportunities</h2>
+                <p>Careers: AI Engineer, Data Analyst, Big Data Scientist, and others.</p>
+            </div>
+            <div id="projects" class="section-content">
+                <h2>Projects</h2>
+                <p>Links and details to related student and research projects.</p>
+            </div>
+            <div id="materials" class="section-content">
+                <h2>Material Books</h2>
+                <p>Reference materials and suggested readings for all subjects.</p>
+            </div>
+            <div id="quiz" class="section-content">
+                <h2>Quiz Links</h2>
+                <p>Internal and external quizzes to develop subject knowledge.</p>
+            </div>
+            <div id="placements" class="section-content">
+                <h2>Placements</h2>
+                <p>Top campus recruiters and placement info will be shown here.</p>
+            </div>
+            <div id="classrooms" class="section-content">
+                <h2>Classrooms</h2>
+                <p>Details about our learning spaces and resources.</p>
+            </div>
+            <div id="labs" class="section-content">
+                <h2>Labs</h2>
+                <p>AI and coding lab facilities for hands-on work.</p>
+            </div>
+            <div id="faculty" class="section-content">
+                <h2>Faculty</h2>
+                <p>Meet the teaching and research faculty of BSc (AI).</p>
+            </div>
+        </div>
+        <div class="main-content">
+            <footer class="footer">
+                <p>&copy; 2025 BSc (AI) College Group. All rights reserved.</p>
+            </footer>
+        </div>
+    </div>
+    <script>
+        const loginForm = document.getElementById('login-form');
+        const errorMsg = document.getElementById('error-msg');
+        errorMsg.style.display = 'none';
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const user = document.getElementById('username').value.trim();
+            const pass = document.getElementById('password').value;
+            if (user === 'IDEAL' && pass === 'IDEAL@1233') {
+                document.getElementById('login-section').style.display = 'none';
+                document.getElementById('career-section').style.display = 'block';
+                document.body.classList.remove('dashboard-bg');
+                document.body.style.background = '#183570';
+            } else {
+                errorMsg.style.display = "block";
+            }
+        });
+        document.getElementById('bsc-ai-course').onclick = function() {
+            document.getElementById('career-section').style.display = "none";
+            document.getElementById('dashboard-section').style.display = "block";
+            document.body.classList.add('dashboard-bg');
+            document.body.style.background = '#f6f8fc';
+            showSection('overview');
+        };
+
+        function showSection(id) {
+            document.querySelectorAll('.section-content').forEach(el => el.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            // Desktop
+            document.querySelectorAll('.sidebar .nav-link').forEach(el => el.classList.remove('active'));
+            let link = document.querySelector('.sidebar .nav-link[onclick*="' + id + '"]');
+            if (link) link.classList.add('active');
+            // Mobile
+            document.querySelectorAll('.mobile-nav .nav-link').forEach(el => el.classList.remove('active'));
+            let mlink = document.querySelector('.mobile-nav .nav-link[onclick*="' + id + '"]');
+            if (mlink) mlink.classList.add('active');
+        }
+    </script>
+</body>
+
+</html>
